@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HKU Email Validator</title>
+    <style>
+        /* 基础样式 */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        input[type="email"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid grey;
+            border-radius: 5px;
+            width: 250px;
+            outline: none;
+        }
+
+        input[type="email"].valid {
+            border-color: green;
+        }
+
+        input[type="email"].invalid {
+            border-color: red;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: grey;
+            cursor: not-allowed;
+        }
+
+        button.enabled {
+            background-color: blue;
+            color: white;
+        }
+
+        .uid-display {
+            margin-top: 15px;
+            font-size: 18px;
+            color: #333;
+        }
+
+        /* 深色模式支持 */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #121212;
+                color: white;
+            }
+            
+            input[type="email"] {
+                background-color: #333;
+                color: white;
+            }
+
+            .uid-display {
+                color: #ddd;
+            }
+
+            button.enabled {
+                background-color: lightblue;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>HKU Email Validator</h1>
+    <input type="email" id="email" placeholder="Enter your HKU email">
+    <br>
+    <button id="submitBtn" disabled>Submit</button>
+    <div class="uid-display" id="uidDisplay"></div>
+</div>
+
+<script>
+    const emailInput = document.getElementById('email');
+    const submitBtn = document.getElementById('submitBtn');
+    const uidDisplay = document.getElementById('uidDisplay');
+
+    // 正则表达式匹配符合HKU邮箱格式
+    const hkuEmailPattern = /^[a-zA-Z0-9._%+-]+@(connect\.hku\.hk|hku\.hk)$/;
+
+    emailInput.addEventListener('input', function () {
+        const email = emailInput.value;
+
+        if (hkuEmailPattern.test(email)) {
+            emailInput.classList.add('valid');
+            emailInput.classList.remove('invalid');
+            submitBtn.disabled = false;
+            submitBtn.classList.add('enabled');
+        } else {
+            emailInput.classList.add('invalid');
+            emailInput.classList.remove('valid');
+            submitBtn.disabled = true;
+            submitBtn.classList.remove('enabled');
+        }
+    });
+
+    submitBtn.addEventListener('click', function () {
+        const email = emailInput.value;
+        const uid = email.split('@')[0];  // 提取邮箱中的 UID
+        uidDisplay.textContent = `UID: ${uid}`;
+    });
+</script>
+
+</body>
+</html>
